@@ -1,0 +1,17 @@
+{
+  "extends": "eslint-config-bamboo",
+  "compilerOptions": {
+    "incremental": true,
+    "sourceMap": false,
+    "outDir": "./dist",
+    "target": "esnext",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "paths": {
+      "@routes/*": ["src/routes/*"],
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["**/node_modules", "**/dist"]
+}
