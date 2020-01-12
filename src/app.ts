@@ -14,7 +14,7 @@ app.use(cors());
 
 // Register Routes
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-scan('./dist/routes', { filter: (stats: Stats, path: string) => !stats.isDirectory() && (path.endsWith('.ts') || path.endsWith('.js')) }).then(async routes => {
+scan('./dist/routes', { filter: (stats: Stats, path: string) => !stats.isDirectory() && (path.endsWith('.ts') || path.endsWith('.js')) }).then(routes => {
 	[...routes.keys()].forEach(async path => {
 		const route = path.split('\\routes')[1].split('.js')[0].replace(/\\+/g, '/');
 
