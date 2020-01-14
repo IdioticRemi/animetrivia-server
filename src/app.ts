@@ -1,7 +1,6 @@
 import 'module-alias/register';
 
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import { scan, Stats } from 'fs-nextra';
 
@@ -9,7 +8,7 @@ import { scan, Stats } from 'fs-nextra';
 const app = express();
 
 // Middlewares
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
 // Register Routes
