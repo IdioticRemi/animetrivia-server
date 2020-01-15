@@ -3,10 +3,9 @@ import { r } from 'rethinkdb-ts';
 
 import { CONFIG } from '@/lib/config';
 
-
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (_, res) => {
 	const conn = await r.connect(CONFIG.RETHINK);
 
 	const all = await r.db('animeTrivia').table('openings')

@@ -30,6 +30,7 @@ router.get('/', async (req, res) => {
 		});
 
 		kitsuData.data = kitsuData.data.splice(0, count < 20 ? count : 20);
+		console.log(i);
 
 		const promises = kitsuData.data.map(async (anime: any) => new Promise(async resolve => {
 			try {
@@ -69,7 +70,14 @@ router.get('/', async (req, res) => {
 	}
 
 	res.setHeader('Content-Type', 'Application/json');
-	res.end(JSON.stringify(data));
+	res.end(JSON.stringify({
+		dataCount: {
+			valid: data.filter(d => !('error' in d)).length,
+			errored: data.filter(d => ('error' in d)).length,
+			total: data.length
+		},
+		data
+	}));
 });
 
 export default router;
@@ -77,7 +85,7 @@ export default router;
 function getURLfromName(key: string, name: string, limit: number) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const res = await fetch(`https://www.googleapis.com/youtube/v3/search?q=${name}&key=${key}&maxResults=${limit}&part=id`)
+			const res = await fetch(`https://www.googleapis.com/youtube/v3/search?q=${escape(name)}&key=${key}&maxResults=${limit}&part=id`)
 				.then(res => res.json());
 
 			resolve(res);

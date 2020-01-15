@@ -1,5 +1,6 @@
 import express from 'express';
-import ytdl from 'ytdl-core';
+// @ts-ignore
+import youtubeStream from 'youtube-audio-stream';
 
 const router = express.Router();
 
@@ -9,15 +10,7 @@ router.get('/', (req, res) => {
 	const url = `https://www.youtube.com/watch?v=${req.query.videoID}`;
 
 	try {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		ytdl.getBasicInfo(url, (err: Error) => {
-			try {
-				if (err) throw err;
-			} catch (e) {
-				return res.status(400).end(e.message);
-			}
-			ytdl(url, { filter: 'audioonly', quality: 'highestaudio' }).pipe(res);
-		});
+		youtubeStream(url, { filter: 'audioonly', quality: 'highestaudio' }).pipe(res);
 	} catch (e) {
 		return res.status(400).end(e.message);
 	}
