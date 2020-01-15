@@ -30,7 +30,6 @@ router.get('/', async (req, res) => {
 		});
 
 		kitsuData.data = kitsuData.data.splice(0, count < 20 ? count : 20);
-		console.log(i);
 
 		const promises = kitsuData.data.map(async (anime: any) => new Promise(async resolve => {
 			try {
