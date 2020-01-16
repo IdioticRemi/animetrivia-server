@@ -1,8 +1,9 @@
 import 'module-alias/register';
 
-import express, { Response } from 'express';
+import express, { Response, Request } from 'express';
 import cors from 'cors';
 import { scan, Stats } from 'fs-nextra';
+import { ApiError } from './lib/error';
 
 // Application
 const app = express();
@@ -24,16 +25,15 @@ scan('./dist/routes', { filter: (stats: Stats, path: string) => !stats.isDirecto
 
 	process.nextTick(() => {
 		// 404 Handler
-		app.use((_req, _res, next) => {
-			const err: any = new Error('Not found!');
-			err.status = 404;
-			next(err);
+		app.use(() => {
+			throw new ApiError('Not found!', 404);
 		});
 
 		// Global error handler
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		app.use((err: any, _req: any, res: Response, _next: any) => {
-			res.status(err.status || 500).send({ error: { status: err.status || 500, message: err.message || 'Internal Server Error' } });
+		app.use((err: ApiError, _: Request, res: Response, _next: any) => {
+			res.setHeader('Content-Type', 'Application/json');
+			res.status(err.status || 500).end(JSON.stringify({ error: { status: err.status || 500, message: err.message || 'Internal Server Error' } }));
 		});
 
 		// Start

@@ -1,18 +1,19 @@
 import express from 'express';
 // @ts-ignore
-import youtubeStream from 'youtube-audio-stream';
+import ytdl from 'ytdl-core';
+import { ApiError } from '@/lib/error';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-	if (!('videoID' in req.query)) return res.status(400).end('Unknown video, please add "videoID" to query params!');
-
+router.get('/', async (req, res, next) => {
+	if (!('videoID' in req.query)) return next(new ApiError('Unknown video, please add "videoID" to query params!', 400));
 	const url = `https://www.youtube.com/watch?v=${req.query.videoID}`;
 
 	try {
-		youtubeStream(url, { filter: 'audioonly', quality: 'highestaudio' }).pipe(res);
+		await ytdl.getBasicInfo(url);
+		ytdl(url, { filter: 'audioonly' }).pipe(res);
 	} catch (e) {
-		return res.status(400).end(e.message);
+		return next(new ApiError(e.message, 400));
 	}
 });
 

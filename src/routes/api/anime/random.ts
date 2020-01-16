@@ -11,9 +11,7 @@ router.get('/', async (_, res) => {
 	const all = await r.db('animeTrivia').table('openings')
 		.run(conn);
 
-	console.log(all);
 	const anime = all[Math.floor(Math.random() * (all.length - 1))];
-	console.log(`\n${anime}`);
 
 	res.setHeader('Content-Type', 'Application/json');
 	res.end(JSON.stringify(anime));

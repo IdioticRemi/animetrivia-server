@@ -1,21 +1,27 @@
 import express from 'express';
+/*
 import Kitsu from 'kitsu';
 import fetch from 'node-fetch';
 import { r } from 'rethinkdb-ts';
 import { CONFIG } from '@/lib/config';
+import { ApiError } from '@/lib/error';
 
 const KitsuAPI = new Kitsu();
 const YTKEY = CONFIG.YOUTUBE;
+*/
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-	let data: any[] = [];
+router.get('/', async (/* req, res, next */) => {
+
+
+	/* let data: any[] = [];
 	const { count }: { count: number } = req.query;
 
-	if (!count || isNaN(count)) return res.status(400).end('Please provide a valid "count" in query parameters!');
+	if (!count || isNaN(count)) return next(new ApiError('Please provide a valid "count" in query parameters!', 400));
 
 	const conn = await r.connect(CONFIG.RETHINK);
+	let it = count;
 
 	for (let i = 1; i < count; i += 20) {
 		const kitsuData = await KitsuAPI.get('anime', {
@@ -26,10 +32,16 @@ router.get('/', async (req, res) => {
 			fields: {
 				anime: 'titles'
 			},
+			filter: {
+				showType: 'TV'
+			},
 			sort: 'popularityRank'
 		});
 
-		kitsuData.data = kitsuData.data.splice(0, count < 20 ? count : 20);
+		kitsuData.data = kitsuData.data.splice(0, it < 20 ? it : 20);
+		it -= 20;
+
+		console.log(kitsuData.data);
 
 		const promises = kitsuData.data.map(async (anime: any) => new Promise(async resolve => {
 			try {
@@ -59,7 +71,7 @@ router.get('/', async (req, res) => {
 
 				resolve(newData);
 			} catch (e) {
-				resolve({ error: e.message });
+				resolve({ error: e.message.replace(CONFIG.YOUTUBE, 'YOUTUBE-TOKEN') });
 			}
 		}));
 
@@ -76,11 +88,12 @@ router.get('/', async (req, res) => {
 			total: data.length
 		},
 		data
-	}));
+	})); */
 });
 
 export default router;
 
+/*
 function getURLfromName(key: string, name: string, limit: number) {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -93,3 +106,4 @@ function getURLfromName(key: string, name: string, limit: number) {
 		}
 	});
 }
+*/
