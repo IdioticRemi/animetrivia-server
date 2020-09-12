@@ -18,7 +18,7 @@
     "kitsu": "^8.0.4",
     "module-alias": "^2.2.2",
     "mongojs": "^3.1.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "rethinkdb-ts": "^2.4.0",
     "ytdl-core": "^1.0.6"
   },
